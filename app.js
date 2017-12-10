@@ -59,8 +59,7 @@ app.post('/api/user/add',function(req, res){
 
 //update
 app.put('/api/user/update',function(req, res){
-  var user = req.body;
-  User.updateUser(user, {} , function(err, user){
+  User.updateUser(req.body, {} , function(err, user){
     if(err){
       res.json({status:res.statusCode, error:err});
     }
