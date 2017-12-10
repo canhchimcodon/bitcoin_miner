@@ -20,7 +20,7 @@ mongoose.connect('mongodb://localhost/bitcoinminer');
 var db = mongoose.connection;
 
 app.get('/',function(req, res){
-  res.send('Please use /api/books or /api/genresss');
+  res.send('Please use /api/books or /api/genres');
 });
 
 //get all
