@@ -48,12 +48,11 @@ app.get('/api/user/getUserByDeviceId',function(req, res){
 
 //add
 app.post('/api/user/add',function(req, res){
-  var user = req.body;
-  User.addUser(user, function(err, userResponse){
+  User.addUser(req.body, function(err, user){
     if(err){
       res.json({status:res.statusCode, error:err});
     }else{
-      res.json({status:res.statusCode,userResponse});
+      res.json({status:res.statusCode,user});
     }
   });
 });
