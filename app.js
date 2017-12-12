@@ -99,7 +99,7 @@ app.get('/api/users/checkUserExist',function(req, res){
 });
 
 //use coupon
-app.post('/api/coupon/use', function(req, res){
+app.get('/api/coupon/use', function(req, res){
   var coupon_code_param = req.query.coupon_code;
   var deviceId = req.query.deviceId;
     User.useCoupon(coupon_code_param, function(err, user){
@@ -108,31 +108,51 @@ app.post('/api/coupon/use', function(req, res){
       }else {
         if(user){
           if(deviceId===''){
-            res.json({status:res.statusCode, result: 'Require deviceId'});
-          }else {
-            //update currentUser
-            User.updateUser(user, {} , function(err, user1){
+            res.json({status:res.statusCode, result:0, message:'Require deviceId'});
+          }else if(deviceId===user.deviceId){
+            res.json({status:res.statusCode, result:0, message: 'You can\'t use this Code'});
+          }else if(user.count_coupon_used>=10){
+            res.json({status:res.statusCode, result:0, message: 'Coupon Code expried'});
+          }
+          else {
+            //check user request
+            User.getUserByDeviceId(deviceId,function(err, user2){
               if(err){
                 res.json({status:res.statusCode, error:err});
+              }else if(user2.coupons_received.indexOf(coupon_code_param) > -1){
+                res.json({status:res.statusCode, result:0, message: 'you had use the Code'});
+              }
+              else if(user2.coupons_received.size>=10){
+                res.json({status:res.statusCode, result:0, message: 'You just can receive max is 10 Codes'});
+              }else if(user.coupons_received.indexOf(user2.coupon_code) > -1){
+                res.json({status:res.statusCode, result:0, message: 'You and your friend had already receive Satoshi'});
+              }
+              else{
+                user2.satoshi+=5000;
+                user2.coupons_received.push(coupon_code_param);
+                User.updateUser(user2, {} , function(err, user2){
+                  if(err){
+                    res.json({status:res.statusCode, error:err});
+                  }else {
+                    //update user coupon code
+                    user.satoshi +=5000;
+                    user.count_coupon_used+=1;
+                    User.updateUser(user, {} , function(err, user){
+                      if(err){
+                        res.json({status:res.statusCode, error:err});
+                      }
+                      else {
+                        res.json({status:res.statusCode,result:1, message: user});
+                      }
+                    });
+                  }
+                });
               }
             });
 
-            User.checkExist(deviceId, function(err, user2){
-              if(err){
-                res.json({status:res.statusCode, error:err});
-              }else {
-                if(user2){
-                  User.updateUser(user2, {} , function(err, user22){
-                    if(err){
-                      res.json({status:res.statusCode, error:err});
-                    }
-                  });
-                }
-              }
-            });
           }
         }else {
-          res.json({status:res.statusCode,result: 'Invalid coupon code'});
+          res.json({status:res.statusCode,result: 'Invalid Code'});
         }
 
       }
