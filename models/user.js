@@ -94,3 +94,26 @@ module.exports.checkExist = function(deviceIdParam, callback){
   var query = {deviceId: deviceIdParam};
   User.findOne(query, callback);
 }
+
+//check coupon exist
+// module.exports.checkCouponExist = function(coupon_code_param, callback){
+//   var query = {coupon_code: coupon_code_param};
+//   User.findOne(query, callback);
+// }
+
+//user coupon_code
+module.exports.useCoupon = function(coupon_code_param, callback){
+  var query = {coupon_code: coupon_code_param};
+  User.findOne(query, callback);
+}
+
+
+
+
+
+
+
+
+
+
+///

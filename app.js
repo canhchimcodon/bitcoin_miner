@@ -98,6 +98,51 @@ app.get('/api/users/checkUserExist',function(req, res){
   });
 });
 
+//use coupon
+app.post('/api/coupon/use', function(req, res){
+  var coupon_code_param = req.query.coupon_code;
+  var deviceId = req.query.deviceId;
+    User.useCoupon(coupon_code_param, function(err, user){
+      if(err){
+        res.json({status:res.statusCode, error:err});
+      }else {
+        if(user){
+          if(deviceId===''){
+            res.json({status:res.statusCode, result: 'Require deviceId'});
+          }else {
+            //update currentUser
+            User.updateUser(user, {} , function(err, user1){
+              if(err){
+                res.json({status:res.statusCode, error:err});
+              }
+            });
+
+            User.checkExist(deviceId, function(err, user2){
+              if(err){
+                res.json({status:res.statusCode, error:err});
+              }else {
+                if(user2){
+                  User.updateUser(user2, {} , function(err, user22){
+                    if(err){
+                      res.json({status:res.statusCode, error:err});
+                    }
+                  });
+                }
+              }
+            });
+          }
+        }else {
+          res.json({status:res.statusCode,result: 'Invalid coupon code'});
+        }
+
+      }
+    });
+});
+
+
+
+
+
 app.get('/api/users')
 
 app.listen(3000);
