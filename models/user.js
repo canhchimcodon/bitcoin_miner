@@ -7,24 +7,38 @@ var userSchema = mongoose.Schema({
     required: true
   },
   nickname:{
-    type: String
+    type: String,
+      default: 'Guest'
   },
   country:{
-    type: String
+    type: String,
+      default: ''
   },
   bitcoin_wallet:{
-    type: String
+    type: String,
+    default: ''
   },
   platform:{
     type: String,
-    require: true
+    require: true,
+    default: 'Android'
   },
   satoshi:{
     type:Number,
-    require: true
+    require: true,
+    default: 0
   },
   coupon_code:{
-    type:String
+    type:String,
+    default: ''
+  },
+  count_coupon_used:{
+    type:Number,
+    default: 0
+  },
+  coupons_received:{
+    type:[String],
+    default: []
   }
 });
 
@@ -62,7 +76,9 @@ module.exports.updateUser = function(user, options, callback){
       bitcoin_wallet: user.bitcoin_wallet,
       platform: user.platform,
       satoshi: user.satoshi,
-      coupon_code: user.coupon_code
+      coupon_code: user.coupon_code,
+      count_coupon_used: user.count_coupon_used,
+      coupons_received: user.coupons_received
   }
   User.findOneAndUpdate(query, update, options, callback);
 }
