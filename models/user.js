@@ -77,8 +77,8 @@ module.exports.updateUser = function(user, options, callback){
       platform: user.platform,
       satoshi: user.satoshi,
       coupon_code: user.coupon_code,
-      count_coupon_used: user.count_coupon_used,
-      coupons_received: user.coupons_received
+      count_coupon_used: user.count_coupon_used
+    //  coupons_received: user.coupons_received
   }
   User.findOneAndUpdate(query, update, options, callback);
 }
