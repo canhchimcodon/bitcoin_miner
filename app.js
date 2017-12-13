@@ -30,7 +30,7 @@ app.get('/api/users',function(req, res){
       res.json({status:res.statusCode, error:err});
     }
     else{
-      res.json({status:res.statusCode,users});
+      res.json({status:res.statusCode,size:Object.keys(users).length, users});
     }
   });
 });
