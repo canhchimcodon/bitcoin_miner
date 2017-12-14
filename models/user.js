@@ -54,7 +54,7 @@ coupon_code: "ACH67AGS"
 
 //get Users
 module.exports.getUsers = function(callback, limit){
-  User.find(callback).limit(limit);
+  User.find(callback).sort({satoshi:-1}).limit(limit);
 }
 //get User
 module.exports.getUserByDeviceId = function(deviceId, callback){

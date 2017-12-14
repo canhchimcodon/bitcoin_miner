@@ -14,6 +14,7 @@ mongoClient.connect(url, function(err, db) {
 });*/
 
 User = require('./models/user.js')
+OtherApp = require('./models/other_app.js')
 
 // Connect to mongoose
 mongoose.connect('mongodb://localhost/bitcoinminer');
@@ -159,11 +160,69 @@ app.get('/api/coupon/use', function(req, res){
     });
 });
 
+//Other app
+//get all
+app.get('/api/otherApps',function(req, res){
+  OtherApp.getOtherApps(function(err, otherApps){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+      res.json({status:res.statusCode,size:Object.keys(otherApps).length, otherApps});
+    }
+  });
+});
+//get by name
+app.get('/api/otherApp/getOtherAppByName',function(req, res){
+  OtherApp.getOtherAppByAppName(req.query.appName,function(err, otherApp){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+      res.json({status:res.statusCode, otherApp});
+    }
+  });
+});
+
+//add
+app.post('/api/otherApp/add',function(req, res){
+  OtherApp.addOtherApp(req.body, function(err, otherApp){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }else{
+      res.json({status:res.statusCode, otherApp});
+    }
+  });
+});
+
+//update
+app.put('/api/otherApp/update',function(req, res){
+  OtherApp.updateOtherApp(req.body, {} , function(err, otherApp){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+    res.json({status:res.statusCode, otherApp});
+    }
+  });
+});
+
+//delete
+app.delete('/api/otherApp/:appName',function(req, res){
+  var id = req.params.appName;
+  OtherApp.deleteOtherApp(id, function(err, otherApp){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+      res.json({status:res.statusCode,otherApp});
+    }
+  });
+});
+//end other app
 
 
-
-
-app.get('/api/users')
+//app.get('/api/users')
 
 app.listen(3000);
 console.log('Running on port 3000...');
