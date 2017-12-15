@@ -39,6 +39,9 @@ var userSchema = mongoose.Schema({
   coupons_received:{
     type:[String],
     default: []
+  },
+  created_date:{
+    type: Date
   }
 });
 
@@ -63,6 +66,7 @@ module.exports.getUserByDeviceId = function(deviceId, callback){
 }
 //add User
 module.exports.addUser = function(user, callback){
+  user.created_date = new Date();
   User.create(user, callback);
 }
 
@@ -79,6 +83,22 @@ module.exports.updateUser = function(user, options, callback){
       coupon_code: user.coupon_code,
       count_coupon_used: user.count_coupon_used
     //  coupons_received: user.coupons_received
+  }
+  User.findOneAndUpdate(query, update, options, callback);
+}
+//update User
+module.exports.updateUserWithCoupons = function(user, options, callback){
+  var query = {deviceId: user.deviceId};
+  var update = {
+      deviceId: user.deviceId,
+      nickname: user.nickname,
+      country: user.country,
+      bitcoin_wallet: user.bitcoin_wallet,
+      platform: user.platform,
+      satoshi: user.satoshi,
+      coupon_code: user.coupon_code,
+      count_coupon_used: user.count_coupon_used,
+      coupons_received: user.coupons_received
   }
   User.findOneAndUpdate(query, update, options, callback);
 }
