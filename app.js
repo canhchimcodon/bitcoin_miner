@@ -214,14 +214,14 @@ app.get('/api/coupon/use', function(req, res){
               else{
                 user2.satoshi+=5000;
                 user2.coupons_received.push(coupon_code_param);
-                User.updateUser(user2, {} , function(err, user2){
+                User.updateUserWithCoupons(user2, {} , function(err, user2){
                   if(err){
                     res.json({status:res.statusCode, error:err});
                   }else {
                     //update user coupon code
                     user.satoshi +=5000;
                     user.count_coupon_used+=1;
-                    User.updateUser(user, {} , function(err, user){
+                    User.updateUserWithCoupons(user, {} , function(err, user){
                       if(err){
                         res.json({status:res.statusCode, error:err});
                       }
