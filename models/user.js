@@ -6,9 +6,11 @@ var userSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  nickname:{
-    type: String,
-      default: 'Guest'
+  username:{
+    type: String
+  },
+  password:{
+    type: String
   },
   country:{
     type: String,
@@ -32,14 +34,18 @@ var userSchema = mongoose.Schema({
     type:String,
     default: ''
   },
-  count_coupon_used:{
+  isCouponUsed:{
     type:Number,
     default: 0
-  },
-  coupons_received:{
-    type:[String],
-    default: []
   }
+  // count_coupon_used:{
+  //   type:Number,
+  //   default: 0
+  // },
+  // coupons_received:{
+  //   type:[String],
+  //   default: []
+  // }
 });
 
 var User = module.exports = mongoose.model('User',userSchema);
@@ -71,13 +77,15 @@ module.exports.updateUser = function(user, options, callback){
   var query = {deviceId: user.deviceId};
   var update = {
       deviceId: user.deviceId,
-      nickname: user.nickname,
+      username: user.username,
+      password: user.password,
       country: user.country,
       bitcoin_wallet: user.bitcoin_wallet,
       platform: user.platform,
       satoshi: user.satoshi,
       coupon_code: user.coupon_code,
-      count_coupon_used: user.count_coupon_used
+      isCouponUsed: user.isCouponUsed
+      //count_coupon_used: user.count_coupon_used
     //  coupons_received: user.coupons_received
   }
   User.findOneAndUpdate(query, update, options, callback);
@@ -92,6 +100,18 @@ module.exports.deleteUser = function(id, callback){
 //check exist
 module.exports.checkExist = function(deviceIdParam, callback){
   var query = {deviceId: deviceIdParam};
+  User.findOne(query, callback);
+}
+
+//check coupon exist
+module.exports.checkCouponCodeExist = function(couponCode, callback){
+  var query = {coupon_code: couponCode};
+  User.findOne(query, callback);
+}
+
+//check coupon exist
+module.exports.checkUsernameExist = function(username, callback){
+  var query = {username: username};
   User.findOne(query, callback);
 }
 

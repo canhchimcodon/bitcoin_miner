@@ -58,6 +58,8 @@ app.post('/api/user/add',function(req, res){
   });
 });
 
+
+
 //update
 app.put('/api/user/update',function(req, res){
   User.updateUser(req.body, {} , function(err, user){
@@ -97,6 +99,87 @@ app.get('/api/users/checkUserExist',function(req, res){
       }
     }
   });
+});
+
+//register
+app.post('/api/user/register', function(req, res){
+  var userRegister = req.body;
+  var coupon_code_invite = req.query.coupon_code_invite;
+  //check update for exist account
+  User.checkUsernameExist(userRegister.username, function(err, user){
+    if(err){
+      res.json({status:res.statusCode, result:0, error:err});
+    }else {
+      if(user){
+        res.json({status:res.statusCode, result:0, message:'The username already exist!'});
+      }else {
+        User.checkExist(userRegister.deviceId, function(err, user){
+          if(err){
+            res.json({status:res.statusCode, result:0, error:err});
+          }else{
+            if(user){
+                if(user.username==null){
+                  //update
+                  user.satoshi+=100000;
+                  user.username = userRegister.username;
+                  user.password = userRegister.password;
+                  User.updateUser(user, {} , function(err, user){
+                    res.json({status:res.statusCode, result:1, user});
+                  });
+                }else {
+                    res.json({status:res.statusCode, result:0, message:'You just create only one account for one device!'});
+                }
+            }else {
+              //create new
+              //check coupon_code
+              if(coupon_code_invite==null || coupon_code_invite===''){
+                userRegister.satoshi+=100000;
+                User.addUser(userRegister, function(err, userAdd){
+                  if(err){
+                    res.json({status:res.statusCode, result:0, error:err});
+                  }else{
+                    res.json({status:res.statusCode, result:1, userAdd});
+                  }
+                });
+              }else {
+                User.checkCouponCodeExist(coupon_code_invite, function(err, user){
+                  if(err){
+                    res.json({status:res.statusCode, result: 0, error:err});
+                  }else {
+                    if(user && user.isCouponUsed==0){
+                      userRegister.satoshi += 110000;
+                      User.addUser(userRegister, function(err, userAdd){
+                        if(err){
+                          res.json({status:res.statusCode, result:0, error:err});
+                        }else{
+                          //add 10000 satoshi for invite success
+                          //update isCouponUsed =1
+                          user.satoshi+=10000;
+                          user.isCouponUsed=1;
+                          User.updateUser(user, {} , function(err, user){
+                            res.json({status:res.statusCode, result:1, userAdd});
+                          });
+
+                        }
+                      });
+
+                    }else {
+                      res.json({status:res.statusCode, result: 0, message: 'Invalid invite code.'});
+                    }
+                  }
+                });
+              }
+              //end check coupon_code
+            }
+          }
+        });
+
+      }
+    }
+  });
+
+
+
 });
 
 //use coupon
