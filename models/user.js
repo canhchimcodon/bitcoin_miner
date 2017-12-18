@@ -40,6 +40,10 @@ var userSchema = mongoose.Schema({
   },
   created_date:{
     type: Date
+  },
+  otherApps:{
+    type:[String],
+    default: []
   }
   // count_coupon_used:{
   //   type:Number,
@@ -74,6 +78,33 @@ module.exports.getUserByDeviceId = function(deviceId, callback){
 module.exports.addUser = function(user, callback){
   user.created_date = new Date();
   User.create(user, callback);
+}
+
+//update Satoshi
+module.exports.updateSatoshi = function(user, options, callback){
+  var query = {deviceId: user.deviceId};
+  var update = {
+      satoshi: user.satoshi
+  }
+  User.findOneAndUpdate(query, update, options, callback);
+}
+
+//update bitcoin_wallet
+module.exports.updateBitcoinWallet = function(user, options, callback){
+  var query = {deviceId: user.deviceId};
+  var update = {
+      bitcoin_wallet: user.bitcoin_wallet
+  }
+  User.findOneAndUpdate(query, update, options, callback);
+}
+
+//update OtherApp
+module.exports.updateOtherApp = function(user, options, callback){
+  var query = {deviceId: user.deviceId};
+  var update = {
+      otherApps: user.otherApps
+  }
+  User.findOneAndUpdate(query, update, options, callback);
 }
 
 //update User

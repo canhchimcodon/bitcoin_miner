@@ -72,6 +72,55 @@ app.put('/api/user/update',function(req, res){
   });
 });
 
+//update
+app.put('/api/user/updateSatoshi',function(req, res){
+  User.updateSatoshi(req.body, {} , function(err, user){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+    res.json({status:res.statusCode,user});
+    }
+  });
+});
+
+//update
+app.put('/api/user/updateBitcoinWallet',function(req, res){
+  User.updateBitcoinWallet(req.body, {} , function(err, user){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+    res.json({status:res.statusCode,user});
+    }
+  });
+});
+
+//update
+app.post('/api/user/updateOtherApp',function(req, res){
+  User.checkExist(req.query.deviceId, function(err, user){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }else {
+      if(user){
+        user.otherApps.push(req.query.otherapp);
+        User.updateOtherApp(user, {} , function(err, user){
+          if(err){
+            res.json({status:res.statusCode, result:0, error:err});
+          }
+          else{
+          res.json({status:res.statusCode,user});
+          }
+        });
+      }else {
+        res.json({status:res.statusCode,result:0});
+      }
+    }
+  });
+
+
+});
+
 //delete
 app.delete('/api/users/:_id',function(req, res){
   var id = req.params._id;
