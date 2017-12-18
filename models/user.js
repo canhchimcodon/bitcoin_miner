@@ -37,6 +37,9 @@ var userSchema = mongoose.Schema({
   isCouponUsed:{
     type:Number,
     default: 0
+  },
+  created_date:{
+    type: Date
   }
   // count_coupon_used:{
   //   type:Number,
@@ -144,6 +147,12 @@ module.exports.useCoupon = function(coupon_code_param, callback){
   User.findOne(query, callback);
 }
 
+
+//login
+module.exports.login = function(username, callback){
+  var query = {username: username};
+  User.findOne(query, callback);
+}
 
 
 

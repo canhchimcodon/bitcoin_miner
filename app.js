@@ -101,6 +101,34 @@ app.get('/api/users/checkUserExist',function(req, res){
   });
 });
 
+//login
+app.post('/api/user/login',function(req,res){
+  var username = req.body.username;
+  var password = req.body.password;
+  var deviceId = req.body.deviceId;
+
+  User.login(username, function(err, user_response){
+    if(err){
+      res.json({status:res.statusCode, result:0, error:err});
+    }else {
+      if(user_response){
+        if(user_response.password===password){
+          if(user_response.deviceId!==deviceId){
+             //update deviceId
+             user_response.deviceId = deviceId;
+             User.updateUser(user_response, {}, {});
+          }
+          res.json({status:res.statusCode, result:1, user_response});
+        }else {
+          res.json({status:res.statusCode, result:0, message:'Invalid password'});
+        }
+      }else {
+        res.json({status:res.statusCode, result:0, message:'Username does not exist'});
+      }
+    }
+  });
+});
+
 //register
 app.post('/api/user/register', function(req, res){
   var userRegister = req.body;
@@ -123,8 +151,8 @@ app.post('/api/user/register', function(req, res){
                   user.satoshi+=100000;
                   user.username = userRegister.username;
                   user.password = userRegister.password;
-                  User.updateUser(user, {} , function(err, user){
-                    res.json({status:res.statusCode, result:1, user});
+                  User.updateUser(user, {} , function(err, user_response){
+                    res.json({status:res.statusCode, result:1, user_response});
                   });
                 }else {
                     res.json({status:res.statusCode, result:0, message:'You just create only one account for one device!'});
@@ -134,11 +162,11 @@ app.post('/api/user/register', function(req, res){
               //check coupon_code
               if(coupon_code_invite==null || coupon_code_invite===''){
                 userRegister.satoshi+=100000;
-                User.addUser(userRegister, function(err, userAdd){
+                User.addUser(userRegister, function(err, user_response){
                   if(err){
                     res.json({status:res.statusCode, result:0, error:err});
                   }else{
-                    res.json({status:res.statusCode, result:1, userAdd});
+                    res.json({status:res.statusCode, result:1, user_response});
                   }
                 });
               }else {
@@ -148,7 +176,7 @@ app.post('/api/user/register', function(req, res){
                   }else {
                     if(user && user.isCouponUsed==0){
                       userRegister.satoshi += 110000;
-                      User.addUser(userRegister, function(err, userAdd){
+                      User.addUser(userRegister, function(err, user_response){
                         if(err){
                           res.json({status:res.statusCode, result:0, error:err});
                         }else{
@@ -157,7 +185,7 @@ app.post('/api/user/register', function(req, res){
                           user.satoshi+=10000;
                           user.isCouponUsed=1;
                           User.updateUser(user, {} , function(err, user){
-                            res.json({status:res.statusCode, result:1, userAdd});
+                            res.json({status:res.statusCode, result:1, user_response});
                           });
 
                         }
