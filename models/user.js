@@ -102,7 +102,8 @@ module.exports.updateBitcoinWallet = function(user, options, callback){
 module.exports.updateOtherApp = function(user, options, callback){
   var query = {deviceId: user.deviceId};
   var update = {
-      otherApps: user.otherApps
+      otherApps: user.otherApps,
+      satoshi: user.satoshi
   }
   User.findOneAndUpdate(query, update, options, callback);
 }

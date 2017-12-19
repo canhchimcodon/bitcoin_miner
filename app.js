@@ -103,17 +103,22 @@ app.post('/api/user/updateOtherApp',function(req, res){
       res.json({status:res.statusCode, error:err});
     }else {
       if(user){
-        user.otherApps.push(req.query.otherapp);
-        User.updateOtherApp(user, {} , function(err, user){
-          if(err){
-            res.json({status:res.statusCode, result:0, error:err});
-          }
-          else{
-          res.json({status:res.statusCode,user});
-          }
-        });
+        if(user.otherApps.indexOf(req.query.otherApp) < 0){
+          user.otherApps.push(req.query.otherApp);
+          user.satoshi += 300;
+          User.updateOtherApp(user, {} , function(err, user){
+            if(err){
+              res.json({status:res.statusCode, result:0, error:err});
+            }
+            else{
+            res.json({status:res.statusCode,user});
+            }
+          });
+        }else {
+          res.json({status:res.statusCode,result:0, message:'You had earn this offers'});
+        }
       }else {
-        res.json({status:res.statusCode,result:0});
+        res.json({status:res.statusCode,result:0, message:'no username exist'});
       }
     }
   });
