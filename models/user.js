@@ -44,7 +44,15 @@ var userSchema = mongoose.Schema({
   otherApps:{
     type:[String],
     default: []
-  }
+  },
+  dial_stars:{
+    type: Number,
+    default:0
+  },
+  dial_last_type:{
+    type: String
+  },
+
   // count_coupon_used:{
   //   type:Number,
   //   default: 0
@@ -89,6 +97,16 @@ module.exports.updateSatoshi = function(user, options, callback){
   User.findOneAndUpdate(query, update, options, callback);
 }
 
+//update dial
+module.exports.updateDial = function(user, options, callback){
+  var query = {deviceId: user.deviceId};
+  var update = {
+    dial_stars: user.dial_stars,
+    dial_last_type: user.dial_last_type
+  }
+  User.findOneAndUpdate(query, update, options, callback);
+}
+
 //update bitcoin_wallet
 module.exports.updateBitcoinWallet = function(user, options, callback){
   var query = {deviceId: user.deviceId};
@@ -120,7 +138,8 @@ module.exports.updateUser = function(user, options, callback){
       platform: user.platform,
       satoshi: user.satoshi,
       coupon_code: user.coupon_code,
-      isCouponUsed: user.isCouponUsed
+      isCouponUsed: user.isCouponUsed,
+
       //count_coupon_used: user.count_coupon_used
     //  coupons_received: user.coupons_received
   }
