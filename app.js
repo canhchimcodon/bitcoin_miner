@@ -336,7 +336,7 @@ app.get('/api/user/dial',function(req,res){
       if(user){
         var random = getRandomInt(1,100);
         var dial_response = dial(user, res, random);
-        res.json({status:res.statusCode, result:1, user, dial_response: dial_response});
+        res.json({status:res.statusCode, result:1, user, dial_response: dial_response, dial_stars : user.dial_stars});
       }else {
         res.json({status:res.statusCode, result:0});
       }
