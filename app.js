@@ -327,6 +327,49 @@ app.get('/api/coupon/use', function(req, res){
 
 //deal
 
+app.get('/api/user/dialReceive', function(req, res){
+  User.checkExist(req.query.deviceId, function(err, user){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }else {
+      if(user){
+        switch (user.dial_stars) {
+          case 1:
+          user.dial_stars = 0;
+          user.satoshi +=1000 * 0.5;
+          break;
+          case 2:
+          user.dial_stars = 0;
+          user.satoshi +=1000 * 1.5;
+          break;
+          case 3:
+          user.dial_stars = 0;
+          user.satoshi +=1000 * 5;
+          break;
+          case 4:
+          user.dial_stars = 0;
+          user.satoshi +=1000 * 17;
+          break;
+          case 5:
+          user.dial_stars = 0;
+          user.satoshi +=1000 * 60;
+          break;
+          case 6:
+          user.dial_stars = 0;
+          user.satoshi +=1000 * 200;
+          break;
+          default:
+          break;
+        }
+        User.updateSatoshi(user,{},function(err,user){
+            res.json({status:res.statusCode, result:1, user});
+        });
+      }else {
+        res.json({status:res.statusCode, result:0});
+      }
+    }
+  });
+});
 
 app.get('/api/user/dial',function(req,res){
   User.checkExist(req.query.deviceId, function(err, user){
@@ -353,9 +396,14 @@ function updateUserDial(user, dial_stars, dial_last_type){
   return user;
 }
 
+
+
 function dial(user, res, random){
 
     if(user.dial_stars==0){
+      user.satoshi -=1000;
+      User.updateSatoshi(user,{},function(err,user){
+      });
       if(random <= 1){
         return getReturnX10();
       }else if(1<random && random <= 10){ //10% vao o 3
@@ -576,7 +624,7 @@ switch(user.dial_last_type){
 					switch(randomReturn){
 					case 1: updateUserDial(user, 2, "c"); return 9;
 					case 2: updateUserDial(user, 2, "c"); return 14;
-					case 3: updateUserDial(user, 2, "c"); return 7;
+					case 3: updateUserDial(user, 2, "c"); return 17;
 					}
 					//return 1a;
 				}
@@ -597,7 +645,7 @@ switch(user.dial_last_type){
 					switch(randomReturn){
             case 1: updateUserDial(user, 3, "c"); return 9;
   					case 2: updateUserDial(user, 3, "c"); return 14;
-  					case 3: updateUserDial(user, 3, "c"); return 7;
+  					case 3: updateUserDial(user, 3, "c"); return 17;
 					}
 					//return 1a;
 				}
@@ -612,7 +660,7 @@ switch(user.dial_last_type){
 					switch(randomReturn){
             case 1: updateUserDial(user, 4, "c"); return 9;
             case 2: updateUserDial(user, 4, "c"); return 14;
-            case 3: updateUserDial(user, 4, "c"); return 7;
+            case 3: updateUserDial(user, 4, "c"); return 17;
 					}
 				//return 1a;
 			}else {
@@ -626,7 +674,7 @@ switch(user.dial_last_type){
 					switch(randomReturn){
             case 1: updateUserDial(user, 5, "c"); return 9;
             case 2: updateUserDial(user, 5, "c"); return 14;
-            case 3: updateUserDial(user, 5, "c"); return 7;
+            case 3: updateUserDial(user, 5, "c"); return 17;
 					}
 				//return 1a;
 			}else {
@@ -660,7 +708,7 @@ switch(user.dial_last_type){
 				}
 			}else {
         updateUserDial(user, 0, "");
-				return getReturnRandomNotTypeC();
+				return getReturnRandomNotTypeD();
 			}
 
 		}else if (user.dial_stars === 2){
@@ -681,7 +729,7 @@ switch(user.dial_last_type){
 				}
 			}else {
         updateUserDial(user, 0, "");
-			return getReturnRandomNotTypeC();
+			return getReturnRandomNotTypeD();
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 3){
@@ -695,7 +743,7 @@ switch(user.dial_last_type){
 				//return 1a;
 			}else {
         updateUserDial(user, 0, "");
-			return getReturnRandomNotTypeC();
+			return getReturnRandomNotTypeD();
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 4){
@@ -709,12 +757,12 @@ switch(user.dial_last_type){
 				//return 1a;
 			}else {
         updateUserDial(user, 0, "");
-			return getReturnRandomNotTypeC();
+			return getReturnRandomNotTypeD();
 				//return con` lai. (ko return type 3)
 			}
 		}else{
       updateUserDial(user, 0, "");
-			return getReturnRandomNotTypeC();
+			return getReturnRandomNotTypeD();
 		}
 		break;
 }
