@@ -97,6 +97,16 @@ module.exports.updateSatoshi = function(user, options, callback){
   User.findOneAndUpdate(query, update, options, callback);
 }
 
+//update dial_stars and Satoshi
+module.exports.updateStarsAndSatoshi = function(user, options, callback){
+  var query = {deviceId: user.deviceId};
+  var update = {
+      satoshi: user.satoshi,
+      dial_stars: user.dial_stars
+  }
+  User.findOneAndUpdate(query, update, options, callback);
+}
+
 //update dial
 module.exports.updateDial = function(user, options, callback){
   var query = {deviceId: user.deviceId};

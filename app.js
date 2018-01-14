@@ -361,8 +361,8 @@ app.get('/api/user/dialReceive', function(req, res){
           default:
           break;
         }
-        User.updateSatoshi(user,{},function(err,user){
-            res.json({status:res.statusCode, result:1, user});
+        User.updateStarsAndSatoshi(user,{},function(err,user_response){
+            res.json({status:res.statusCode, result:1, satoshi:user.satoshi});
         });
       }else {
         res.json({status:res.statusCode, result:0});
@@ -379,7 +379,7 @@ app.get('/api/user/dial',function(req,res){
       if(user){
         var random = getRandomInt(1,100);
         var dial_response = dial(user, res, random);
-        res.json({status:res.statusCode, result:1, user, dial_response: dial_response, dial_stars : user.dial_stars});
+        res.json({status:res.statusCode, result:1, user, dial_response: dial_response, dial_stars : user.dial_stars, dial_last_type: user.dial_last_type});
       }else {
         res.json({status:res.statusCode, result:0});
       }
