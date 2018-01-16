@@ -334,32 +334,45 @@ app.get('/api/user/dialReceive', function(req, res){
     }else {
       if(user){
         switch (user.dial_stars) {
+          case 10:
+            if(user.dial_last_type==='e'){
+              user.dial_stars = 0;
+              user.satoshi += user.dial_last_invest*25;
+              user.dial_last_invest = 0;
+            }
+            break;
           case 1:
-          user.dial_stars = 0;
-          user.satoshi +=1000 * 0.5;
-          break;
+            user.dial_stars = 0;
+            user.satoshi +=user.dial_last_invest * 0.5;
+            user.dial_last_invest = 0;
+            break;
           case 2:
-          user.dial_stars = 0;
-          user.satoshi +=1000 * 1.5;
-          break;
+            user.dial_stars = 0;
+            user.satoshi +=user.dial_last_invest * 1.5;
+            user.dial_last_invest = 0;
+            break;
           case 3:
-          user.dial_stars = 0;
-          user.satoshi +=1000 * 5;
-          break;
+            user.dial_stars = 0;
+            user.satoshi +=user.dial_last_invest * 5;
+            user.dial_last_invest = 0;
+            break;
           case 4:
-          user.dial_stars = 0;
-          user.satoshi +=1000 * 17;
-          break;
+            user.dial_stars = 0;
+            user.satoshi +=user.dial_last_invest * 17;
+            user.dial_last_invest = 0;
+            break;
           case 5:
-          user.dial_stars = 0;
-          user.satoshi +=1000 * 60;
-          break;
+            user.dial_stars = 0;
+            user.satoshi +=user.dial_last_invest * 60;
+            user.dial_last_invest = 0;
+            break;
           case 6:
-          user.dial_stars = 0;
-          user.satoshi +=1000 * 200;
-          break;
+            user.dial_stars = 0;
+            user.satoshi += user.dial_last_invest * 200;
+            user.dial_last_invest = 0;
+            break;
           default:
-          break;
+            break;
         }
         User.updateStarsAndSatoshi(user,{},function(err,user_response){
             res.json({status:res.statusCode, result:1, satoshi:user.satoshi});
@@ -378,6 +391,9 @@ app.get('/api/user/dial',function(req,res){
     }else {
       if(user){
         var random = getRandomInt(1,100);
+        if(user.dial_last_invest==0 && req.query.dial_last_invest>0){
+          user.dial_last_invest = req.query.dial_last_invest;
+        }
         var dial_response = dial(user, res, random);
         res.json({status:res.statusCode, result:1, user, dial_response: dial_response, dial_stars : user.dial_stars, dial_last_type: user.dial_last_type});
       }else {
@@ -390,6 +406,9 @@ app.get('/api/user/dial',function(req,res){
 function updateUserDial(user, dial_stars, dial_last_type){
   user.dial_stars = dial_stars;
   user.dial_last_type = dial_last_type;
+  if(dial_stars==0){
+    user.dial_last_invest = 0;
+  }
   User.updateDial(user,{},function(err,user){
 
   });
@@ -401,10 +420,13 @@ function updateUserDial(user, dial_stars, dial_last_type){
 function dial(user, res, random){
 
     if(user.dial_stars==0){
-      user.satoshi -=1000;
+      user.satoshi -= user.dial_last_invest;
       User.updateSatoshi(user,{},function(err,user){
       });
-      if(random <= 1){
+      User.updateDialInvest(user,{},function(err,user){
+      });
+      if(random <= 100){
+        updateUserDial(user, 10, "e");
         return getReturnX10();
       }else if(1<random && random <= 10){ //10% vao o 3
         var randomReturn = getRandomInt(1,5);

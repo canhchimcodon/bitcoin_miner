@@ -52,6 +52,10 @@ var userSchema = mongoose.Schema({
   dial_last_type:{
     type: String
   },
+  dial_last_invest:{
+    type: Number,
+    default: 0
+  }
 
   // count_coupon_used:{
   //   type:Number,
@@ -97,12 +101,22 @@ module.exports.updateSatoshi = function(user, options, callback){
   User.findOneAndUpdate(query, update, options, callback);
 }
 
+//update DialInvest
+module.exports.updateDialInvest = function(user, options, callback){
+  var query = {deviceId: user.deviceId};
+  var update = {
+      dial_last_invest: user.dial_last_invest
+  }
+  User.findOneAndUpdate(query, update, options, callback);
+}
+
 //update dial_stars and Satoshi
 module.exports.updateStarsAndSatoshi = function(user, options, callback){
   var query = {deviceId: user.deviceId};
   var update = {
       satoshi: user.satoshi,
-      dial_stars: user.dial_stars
+      dial_stars: user.dial_stars,
+      dial_last_invest: user.dial_last_invest
   }
   User.findOneAndUpdate(query, update, options, callback);
 }
@@ -112,7 +126,8 @@ module.exports.updateDial = function(user, options, callback){
   var query = {deviceId: user.deviceId};
   var update = {
     dial_stars: user.dial_stars,
-    dial_last_type: user.dial_last_type
+    dial_last_type: user.dial_last_type,
+    dial_last_invest: user.dial_last_invest
   }
   User.findOneAndUpdate(query, update, options, callback);
 }
