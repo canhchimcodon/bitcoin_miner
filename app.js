@@ -425,10 +425,10 @@ function dial(user, res, random){
       });
       User.updateDialInvest(user,{},function(err,user){
       });
-      if(random <= 100){
+      if(random <= 1){
         updateUserDial(user, 10, "e");
         return getReturnX10();
-      }else if(1<random && random <= 10){ //10% vao o 3
+      }else if(1<random && random <= 7){ //10% vao o 3
         var randomReturn = getRandomInt(1,5);
         //res.json({random:random});
         switch(randomReturn){
@@ -438,7 +438,7 @@ function dial(user, res, random){
           case 4: updateUserDial(user, 3, "d"); return 7;
           }
         //return 3a or 3b or 3c
-      }else if( 10<random && random <=20){ //10% vao o 2
+      }else if( 7<random && random <=20){ //10% vao o 2
         var randomReturn = getRandomInt(1,5);
         switch(randomReturn){
           case 1: updateUserDial(user, 2, "a"); return 5;
