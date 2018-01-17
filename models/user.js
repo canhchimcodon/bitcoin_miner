@@ -50,7 +50,8 @@ var userSchema = mongoose.Schema({
     default:0
   },
   dial_last_type:{
-    type: String
+    type: String,
+    default: ""
   },
   dial_last_invest:{
     type: Number,
