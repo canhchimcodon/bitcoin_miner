@@ -56,6 +56,14 @@ var userSchema = mongoose.Schema({
   dial_last_invest:{
     type: Number,
     default: 0
+  },
+  last_receive_satoshi_date:{
+    type: Date,
+    default: new Date().setTime(new Date().getTime() - 1 * 86400000)
+  },
+  satoshi2:{
+    type: Number,
+    default: 0
   }
 
   // count_coupon_used:{
@@ -93,11 +101,23 @@ module.exports.addUser = function(user, callback){
   User.create(user, callback);
 }
 
+
 //update Satoshi
 module.exports.updateSatoshi = function(user, options, callback){
   var query = {deviceId: user.deviceId};
   var update = {
-      satoshi: user.satoshi
+      satoshi: user.satoshi,
+      satoshi2: user.satoshi2,
+  }
+  User.findOneAndUpdate(query, update, options, callback);
+}
+
+//update after get free satoshi
+module.exports.updateReceiveFreeSatoshi = function(user, options, callback){
+  var query = {deviceId: user.deviceId};
+  var update = {
+      satoshi: user.satoshi,
+      last_receive_satoshi_date : user.last_receive_satoshi_date,
   }
   User.findOneAndUpdate(query, update, options, callback);
 }
@@ -163,8 +183,10 @@ module.exports.updateUser = function(user, options, callback){
       bitcoin_wallet: user.bitcoin_wallet,
       platform: user.platform,
       satoshi: user.satoshi,
+      satoshi2: user.satoshi2,
       coupon_code: user.coupon_code,
       isCouponUsed: user.isCouponUsed,
+      last_receive_satoshi_date: user.last_receive_satoshi_date,
 
       //count_coupon_used: user.count_coupon_used
     //  coupons_received: user.coupons_received

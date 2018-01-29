@@ -85,6 +85,53 @@ app.put('/api/user/updateSatoshi',function(req, res){
 });
 
 //update
+app.get('/api/user/getFreeSatoshi',function(req, res){
+  User.checkExist(req.query.deviceId, function(err,user){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+      if(user){
+        if(user.satoshi<=500000){
+          if(user.satoshi2 >=5000){
+           var lastReceiveDate = new Date(user.last_receive_satoshi_date.setTime(user.last_receive_satoshi_date.getTime() + 1 * 86400000 ));
+           if(lastReceiveDate< Date.now()){
+               user.last_receive_satoshi_date = Date.now();
+               var receiveSatoshi = 0;
+                if(user.isCouponUsed===1){
+                  user.satoshi +=50000;
+                  receiveSatoshi = 50000;
+                }else {
+                  user.satoshi +=10000;
+                  receiveSatoshi = 10000;
+                }
+               User.updateReceiveFreeSatoshi(user,{}, function(err, user){
+                 if(err){
+                   res.json({status:res.statusCode, error:err});
+                 }else {
+                   res.json({status:res.statusCode,result:1, message:'Congratulation! You earned '+ receiveSatoshi +' Satoshi!'});
+                 }
+               });
+
+           }else {
+             var millis = lastReceiveDate - Date.now();
+             res.json({status:res.statusCode,result:0, message:'You can get free Satoshi after ' + Math.floor(millis/1000/60/60) + ':' + Math.floor(millis/1000/60%60) + ' hours.'});
+           }
+          }else {
+            res.json({status:res.statusCode,result:0, message:'You need earn minimum 5000 Satoshi from any Bitcoin Minerals!\n\nYou earned ' + user.satoshi2 + ' Satoshi!'});
+          }
+        }else {
+          res.json({status:res.statusCode,result:0, message:'You just get free Satoshi when your balance less than 500.000 Satoshi!'});
+        }
+      }else {
+        res.json({status:res.statusCode,result:0, message:'no username exist'});
+      }
+    }
+  });
+
+});
+
+//update
 app.put('/api/user/updateBitcoinWallet',function(req, res){
   User.updateBitcoinWallet(req.body, {} , function(err, user){
     if(err){
