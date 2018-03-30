@@ -475,7 +475,7 @@ function dial(user, res, random){
       if(random <= 1){
         updateUserDial(user, 10, "e");
         return getReturnX10();
-      }else if(1<random && random <= 7){ //10% vao o 3
+      }else if(1<random && random <= 4){ //10% vao o 3
         var randomReturn = getRandomInt(1,5);
         //res.json({random:random});
         switch(randomReturn){
@@ -485,7 +485,7 @@ function dial(user, res, random){
           case 4: updateUserDial(user, 3, "d"); return 7;
           }
         //return 3a or 3b or 3c
-      }else if( 7<random && random <=20){ //10% vao o 2
+      }else if( 4<random && random <=10){ //10% vao o 2
         var randomReturn = getRandomInt(1,5);
         switch(randomReturn){
           case 1: updateUserDial(user, 2, "a"); return 5;
@@ -525,10 +525,10 @@ switch(user.dial_last_type){
 		if(user.dial_stars===1){
 			if(1<random && random <=22){
 				var random2 = getRandomInt(1,100);
-				if(1<random2 && random2 <=10){
+				if(1<random2 && random2 <=5){
           updateUserDial(user, 4, "a");
 					return 18; //3a
-				}else if(10< random2 <=30){
+				}else if(5< random2 <=15){
           updateUserDial(user, 3, "a");
 					return 5; //2a
 				}else{
@@ -546,7 +546,7 @@ switch(user.dial_last_type){
 			}
 
 		}else if (user.dial_stars === 2){
-			if(1<random && random <=22){
+			if(1<random && random <=10){
 				var random2 = getRandomInt(1,100);
 				if(1< random2  && random2 <=10){
           updateUserDial(user, 4, "a");
@@ -567,7 +567,7 @@ switch(user.dial_last_type){
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 3){
-			if(1<random && random <=22){
+			if(1<random && random <=10){
 			var randomReturn = getRandomInt(1,4);
 					switch(randomReturn){
 					case 1: updateUserDial(user, 4, "a"); return 1;
@@ -581,7 +581,7 @@ switch(user.dial_last_type){
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 4){
-			if(1<random && random <=10){
+			if(1<random && random <=8){
 			var randomReturn = getRandomInt(1,4);
 					switch(randomReturn){
             case 1: updateUserDial(user, 5, "a"); return 1;
@@ -604,10 +604,10 @@ switch(user.dial_last_type){
 		if(user.dial_stars===1){
 			if(1<random && random <=22){
 				var random2 = getRandomInt(1,100);
-				if(1<random2 && random2 <=10){
+				if(1<random2 && random2 <=5){
           updateUserDial(user, 4, "b");
 					return 2; //3a
-				}else if(10< random2 && random2  <=30){
+				}else if(5< random2 && random2  <=15){
           updateUserDial(user, 3, "b");
 					return 11; //2a
 				}else{
@@ -625,7 +625,7 @@ switch(user.dial_last_type){
 			}
 
 		}else if (user.dial_stars === 2){
-			if(1<random && random <=22){
+			if(1<random && random <=10){
 				var random2 = getRandomInt(1,100);
 				if(1< random2 && random2  <=10){
           updateUserDial(user, 4, "b");
@@ -646,7 +646,7 @@ switch(user.dial_last_type){
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 3){
-			if(1<random && random <=22){
+			if(1<random && random <=10){
 			var randomReturn = getRandomInt(1,4);
 					switch(randomReturn){
             case 1: updateUserDial(user, 4, "b"); return 3;
@@ -660,7 +660,7 @@ switch(user.dial_last_type){
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 4){
-			if(1<random && random <=10){
+			if(1<random && random <=8){
 			var randomReturn = getRandomInt(1,4);
 					switch(randomReturn){
             case 1: updateUserDial(user, 5, "b"); return 3;
@@ -682,10 +682,10 @@ switch(user.dial_last_type){
 		if(user.dial_stars===1){
 			if(1<random && random <=22){
 				var random2 = getRandomInt(1,100);
-				if(1<random2 && random2 <=10){
+				if(1<random2 && random2 <=5){
           updateUserDial(user, 4, "c");
 					return 13; //3a
-				}else if(10< random2 && random2  <=30){
+				}else if(5< random2 && random2  <=15){
           updateUserDial(user, 3, "c");
 					return 22; //2a
 				}else{
@@ -703,7 +703,7 @@ switch(user.dial_last_type){
 			}
 
 		}else if (user.dial_stars === 2){
-			if(1<random && random <=22){
+			if(1<random && random <=10){
 				var random2 = getRandomInt(1,100);
 				if(1< random2 && random2  <=10){
           updateUserDial(user, 4, "c");
@@ -724,7 +724,7 @@ switch(user.dial_last_type){
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 3){
-			if(1<random && random <=22){
+			if(1<random && random <=10){
 			var randomReturn = getRandomInt(1,4);
 					switch(randomReturn){
             case 1: updateUserDial(user, 4, "c"); return 9;
@@ -738,7 +738,7 @@ switch(user.dial_last_type){
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 4){
-			if(1<random && random <=10){
+			if(1<random && random <=8){
 			var randomReturn = getRandomInt(1,4);
 					switch(randomReturn){
             case 1: updateUserDial(user, 5, "c"); return 9;
@@ -760,10 +760,10 @@ switch(user.dial_last_type){
 		if(user.dial_stars===1){
 			if(1<random && random <=22){
 				var random2 = getRandomInt(1,100);
-				if(1<random2 && random2 <=10){
+				if(1<random2 && random2 <=5){
           updateUserDial(user, 4, "d");
 					return 7; //3a
-				}else if(10< random2 && random2  <=30){
+				}else if(5< random2 && random2  <=15){
           updateUserDial(user, 3, "d");
 					return 16; //2a
 				}else{
@@ -781,7 +781,7 @@ switch(user.dial_last_type){
 			}
 
 		}else if (user.dial_stars === 2){
-			if(1<random && random <=22){
+			if(1<random && random <=10){
 				var random2 = getRandomInt(1,100);
 				if(1< random2 && random2  <=10){
           updateUserDial(user, 4, "d");
@@ -802,7 +802,7 @@ switch(user.dial_last_type){
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 3){
-			if(1<random && random <=22){
+			if(1<random && random <=10){
 			var randomReturn = getRandomInt(1,4);
 					switch(randomReturn){
             case 1: updateUserDial(user, 4, "d"); return 8;
@@ -816,7 +816,7 @@ switch(user.dial_last_type){
 				//return con` lai. (ko return type 3)
 			}
 		}else if (user.dial_stars === 4){
-			if(1<random && random <=10){
+			if(1<random && random <=8){
 			var randomReturn = getRandomInt(1,4);
 					switch(randomReturn){
             case 1: updateUserDial(user, 5, "d"); return 8;
