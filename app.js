@@ -93,7 +93,7 @@ app.get('/api/user/getFreeSatoshi',function(req, res){
     else{
       if(user){
         if(user.satoshi<=500000){
-          if(user.satoshi2 >=5000){
+        //  if(user.satoshi2 >=5000){
            var lastReceiveDate = new Date(user.last_receive_satoshi_date.setTime(user.last_receive_satoshi_date.getTime() + 1 * 86400000 ));
            if(lastReceiveDate< Date.now()){
                user.last_receive_satoshi_date = Date.now();
@@ -117,9 +117,9 @@ app.get('/api/user/getFreeSatoshi',function(req, res){
              var millis = lastReceiveDate - Date.now();
              res.json({status:res.statusCode,result:0, message:'You can get free Satoshi after ' + Math.floor(millis/1000/60/60) + ':' + Math.floor(millis/1000/60%60) + ' hours.'});
            }
-          }else {
-            res.json({status:res.statusCode,result:0, message:'You need earn minimum 5000 Satoshi from any Bitcoin Minerals!\n\nYou earned ' + user.satoshi2 + ' Satoshi!'});
-          }
+          //}else {
+          //  res.json({status:res.statusCode,result:0, message:'You need earn minimum 5000 Satoshi from any Bitcoin Minerals!\n\nYou earned ' + user.satoshi2 + ' Satoshi!'});
+          //}
         }else {
           res.json({status:res.statusCode,result:0, message:'You just get free Satoshi when your balance less than 500.000 Satoshi!'});
         }
