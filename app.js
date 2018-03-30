@@ -546,7 +546,7 @@ switch(user.dial_last_type){
 			}
 
 		}else if (user.dial_stars === 2){
-			if(1<random && random <=10){
+			if(1<random && random <=15){
 				var random2 = getRandomInt(1,100);
 				if(1< random2  && random2 <=10){
           updateUserDial(user, 4, "a");
@@ -625,7 +625,7 @@ switch(user.dial_last_type){
 			}
 
 		}else if (user.dial_stars === 2){
-			if(1<random && random <=10){
+			if(1<random && random <=15){
 				var random2 = getRandomInt(1,100);
 				if(1< random2 && random2  <=10){
           updateUserDial(user, 4, "b");
@@ -703,7 +703,7 @@ switch(user.dial_last_type){
 			}
 
 		}else if (user.dial_stars === 2){
-			if(1<random && random <=10){
+			if(1<random && random <=15){
 				var random2 = getRandomInt(1,100);
 				if(1< random2 && random2  <=10){
           updateUserDial(user, 4, "c");
@@ -781,7 +781,7 @@ switch(user.dial_last_type){
 			}
 
 		}else if (user.dial_stars === 2){
-			if(1<random && random <=10){
+			if(1<random && random <=15){
 				var random2 = getRandomInt(1,100);
 				if(1< random2 && random2  <=10){
           updateUserDial(user, 4, "d");
