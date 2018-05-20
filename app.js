@@ -3,6 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+
 app.use(bodyParser.json());
 
 /*var mongoClient = require('mongodb').MongoClient;
@@ -15,6 +16,8 @@ mongoClient.connect(url, function(err, db) {
 
 User = require('./models/user.js')
 OtherApp = require('./models/other_app.js')
+Product = require('./models/product.js')
+Category = require('./models/category.js')
 
 // Connect to mongoose
 mongoose.connect('mongodb://localhost/bitcoinminer');
@@ -964,6 +967,99 @@ app.delete('/api/otherApp/:appName',function(req, res){
 
 
 //app.get('/api/users')
+
+//best order
+//get all
+app.get('/api/products',function(req, res){
+  Product.getProducts(function(err, products){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+      res.json({status:res.statusCode,size:Object.keys(products).length, products});
+    }
+  });
+});
+
+
+//add
+app.post('/api/product/add',function(req, res){
+  Product.addProduct(req.body, function(err, product){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }else{
+      res.json({status:res.statusCode,product});
+    }
+  });
+});
+
+
+
+//update
+app.put('/api/product/update',function(req, res){
+  Product.updateProduct(req.body, {} , function(err, product){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+    res.json({status:res.statusCode,product});
+    }
+  });
+});
+
+// get products by category_id
+app.get('/api/products/c', function(req, res){
+  var category_id = req.query.category_id;
+  var limit = Number(req.query.limit);
+  var page = Number(req.query.page);
+  Product.getProductByCategory(category_id,limit,page,function(err, products){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+      res.json({status:res.statusCode,size:Object.keys(products).length, page:page, products});
+    }
+  });
+});
+
+
+//get all
+app.get('/api/categories',function(req, res){
+  Category.getCategories(function(err, categories){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+      res.json({status:res.statusCode,size:Object.keys(categories).length, categories});
+    }
+  });
+});
+
+
+//add
+app.post('/api/category/add',function(req, res){
+  Category.addCategory(req.body, function(err, category){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }else{
+      res.json({status:res.statusCode, category});
+    }
+  });
+});
+
+
+
+//update
+app.put('/api/category/update',function(req, res){
+  Category.updateCategory(req.body, {} , function(err, category){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+    res.json({status:res.statusCode, category});
+    }
+  });
+});
 
 app.listen(3000);
 console.log('Running on port 3000...');
