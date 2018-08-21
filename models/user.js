@@ -30,6 +30,11 @@ var userSchema = mongoose.Schema({
     require: true,
     default: 0
   },
+  satoshi2:{
+    type:Number,
+    require: true,
+    default: 0
+  },
   coupon_code:{
     type:String,
     default: ''
