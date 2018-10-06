@@ -87,7 +87,7 @@ app.put('/api/user/updateSatoshi',function(req, res){
   });
 });
 
-//update
+//update update
 app.get('/api/user/getFreeSatoshi',function(req, res){
   User.checkExist(req.query.deviceId, function(err,user){
     if(err){
