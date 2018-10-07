@@ -155,7 +155,7 @@ app.post('/api/user/updateOtherApp',function(req, res){
       if(user){
         if(user.otherApps.indexOf(req.query.otherApp) < 0){
           user.otherApps.push(req.query.otherApp);
-          user.satoshi += 300;
+          user.satoshi += req.satoshi;
           User.updateOtherApp(user, {} , function(err, user){
             if(err){
               res.json({status:res.statusCode, result:0, error:err});
