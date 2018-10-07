@@ -63,13 +63,13 @@ module.exports.updateOtherApp = function(otherApp, options, callback){
       descriptionAction: otherApp.descriptionAction,
       satoshi: otherApp.satoshi
   }
-  User.findOneAndUpdate(query, update, options, callback);
+  OtherApp.findOneAndUpdate(query, update, options, callback);
 }
 
 //delete User
 module.exports.deleteOtherApp = function(appName, callback){
   var query = {appName: appName};
-  User.remove(query, callback);
+  OtherApp.remove(query, callback);
 }
 
 
