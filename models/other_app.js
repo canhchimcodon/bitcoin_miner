@@ -54,7 +54,7 @@ module.exports.addOtherApp = function(otherApp, callback){
 
 //update User
 module.exports.updateOtherApp = function(otherApp, options, callback){
-  var query = {appName: otherApp.appName};
+  var query = {_id: otherApp._id};
   var update = {
       appName: otherApp.appName,
       description: otherApp.description,
