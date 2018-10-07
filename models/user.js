@@ -89,6 +89,14 @@ module.exports.getUsers = function(callback, limit){
   created_date: {"$gte": new Date("2018-08-01T00:00:00.000Z")}};
   User.find(query, callback).sort({satoshi:-1}).limit(limit);
 }
+
+//ranking 10
+module.exports.ranking = function(callback, limit){
+  var query = {
+  created_date: {"$gte": new Date("2018-08-01T00:00:00.000Z")},
+};
+  User.find(query, callback).sort({satoshi:-1}).limit(10);
+}
 //get User
 module.exports.getUserByDeviceId = function(deviceId, callback){
   var query ={deviceId: deviceId}

@@ -38,6 +38,19 @@ app.get('/api/users',function(req, res){
     }
   });
 });
+
+//ranking
+app.get('/api/user/ranking',function(req, res){
+  User.ranking(function(err, users){
+    if(err){
+      res.json({status:res.statusCode, error:err});
+    }
+    else{
+      res.json({status:res.statusCode,size:Object.keys(users).length, users});
+    }
+  });
+});
+
 //get by id
 app.get('/api/user/getUserByDeviceId',function(req, res){
   User.getUserByDeviceId(req.query.deviceId,function(err, user){
